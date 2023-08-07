@@ -87,7 +87,6 @@ const FormCreate = ({}) => {
 
       if (error) console.error(error);
 
-      console.log('something');
       await new Promise(resolve => setTimeout(resolve, 3000));
       formik.resetForm();
     },
