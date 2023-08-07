@@ -87,6 +87,8 @@ const FormCreate = ({}) => {
 
       if (error) console.error(error);
 
+      console.log('Test git');
+
       await new Promise(resolve => setTimeout(resolve, 3000));
       formik.resetForm();
     },
