@@ -45,7 +45,7 @@ export default function DemoPage() {
           <div className='bg-[rgb(240,243,245)] p-4 rounded-[5px]'>
             <Image src={iconItems} alt='Icon Items' className='w-[32px] ' />
           </div>
-          <h1 className='text-2xl text-[#343a40] hover:cursor-pointer font-serif'>
+          <h1 className='text-2xl text-[#343a40] hover:cursor-pointer font-semibold'>
             Danh sách tin đăng
           </h1>
         </div>
