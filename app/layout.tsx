@@ -21,6 +21,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className={roboto.className}>
+        <div id='previewImageModal' />
         <div className='flex'>
           <Sidebar />
           {children}

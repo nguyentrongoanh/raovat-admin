@@ -2,10 +2,12 @@
 
 import { useRouter } from 'next/navigation';
 
-import { FC, isValidElement, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import supabase from '@/services/supabase';
 import * as Yup from 'yup';
+import Image from 'next/image';
+import camera from '@/public/images/camera.png';
 
 // import UploadImage from '../upload/UploadImage';
 import Input from '@/components/ui/input';
@@ -14,12 +16,15 @@ import Select from 'react-select';
 import { Oval } from 'react-loader-spinner';
 import { Checkbox } from './ui/checkbox';
 import { Button } from './ui/button';
+import ImagesThumbnail from './imageThumbnail';
 
 // interface FormCreateProps {}
 
 const FormCreate = ({}) => {
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
+  const [isPreview, setIsPreview] = useState(false);
+  const [isExceedFilesLimit, setIsExceedFilesLimit] = useState(false);
 
   const router = useRouter();
 
@@ -34,6 +39,7 @@ const FormCreate = ({}) => {
       isActive: true,
       isVip: false,
       selectedPricing: null,
+      photo: null,
     },
 
     validationSchema: Yup.object({
@@ -80,14 +86,25 @@ const FormCreate = ({}) => {
         active: formik.values.isActive,
       };
 
-      const { data, error } = await supabase
+      const { data: dataTin, error } = await supabase
         .from('tin_dang')
         .insert([{ ...ad }])
         .select();
 
-      if (error) console.error(error);
+      const id = dataTin[0].id;
 
-      console.log('Test git');
+      if (formik.values.photo) {
+        // Loop to save images to storage
+        for (let i = 0; i < formik.values.photo.length; i++) {
+          const filename = `${id}/images-${i + 1}`;
+          const { data: images, error } = await supabase.storage
+            .from('images')
+            .upload(filename, formik.values.photo[i], {
+              cacheControl: '3600',
+              upsert: true,
+            });
+        }
+      }
 
       await new Promise(resolve => setTimeout(resolve, 3000));
       formik.resetForm();
@@ -157,6 +174,19 @@ const FormCreate = ({}) => {
 
   const handleVipCheckbox = () => {
     formik.setFieldValue('isVip', !formik.values.isVip);
+  };
+
+  const handleUploadImages = e => {
+    // Check if files exceed limit amount
+
+    const files = e.target.files;
+    if (files.length > 5) {
+      setIsExceedFilesLimit(true);
+    } else {
+      // if not exceed limit amount, proceed reading files
+      formik.setFieldValue('photo', files);
+      setIsExceedFilesLimit(false);
+    }
   };
 
   const colorStyles = {
@@ -328,6 +358,35 @@ const FormCreate = ({}) => {
               onBlur={formik.handleBlur}
             />
           </Input>
+          <p className='font-semibold mb-2'>
+            Hình ảnh (tối đa 5 ảnh){' '}
+            {isExceedFilesLimit && (
+              <span className='text-red-500'>Chỉ được upload tối đa 5 ảnh</span>
+            )}
+          </p>
+          <div className='flex flex-col space-x-5 mb-3'>
+            <label htmlFor='image' className='hover:cursor-pointer w-fit'>
+              <input
+                type='file'
+                multiple
+                name='photo'
+                id='image'
+                accept='image/*'
+                className='hidden'
+                onChange={handleUploadImages}
+              />
+              <Image
+                src={camera}
+                alt='upload hinh'
+                className='w-20 rounded-sm'
+              />
+            </label>
+          </div>
+          <div>
+            {formik.values.photo != null && (
+              <ImagesThumbnail files={formik.values.photo} />
+            )}
+          </div>
         </div>
         <div className='flex justify-end space-x-4 p-4'>
           <Button
