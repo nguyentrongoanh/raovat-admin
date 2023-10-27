@@ -1,7 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-
 import { FC, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import supabase from '@/services/supabase';
@@ -18,19 +16,27 @@ import { Checkbox } from './ui/checkbox';
 import { Button } from './ui/button';
 import ImagesThumbnail from './imageThumbnail';
 
-// interface FormCreateProps {}
-
-const FormCreate = ({}) => {
+const FormEdit = ({ tinId }) => {
+  const [ad, setAd] = useState(null);
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
-  const [isPreview, setIsPreview] = useState(false);
   const [isExceedFilesLimit, setIsExceedFilesLimit] = useState(false);
 
-  const router = useRouter();
+  console.log(ad);
+
+  // Fetch tin detail
+  useEffect(() => {
+    async function fetchData() {
+      const data = await fetchDetailById(tinId);
+      console.log(data);
+      setAd(...data);
+    }
+    fetchData();
+  }, []);
 
   const formik = useFormik({
     initialValues: {
-      selectedCategory: null,
+      selectedCategory: '',
       selectedSubcategory: null,
       title: '',
       desc: '',
@@ -110,6 +116,17 @@ const FormCreate = ({}) => {
       formik.resetForm();
     },
   });
+
+  const fetchDetailById = async id => {
+    const { data, error } = await supabase
+      .from('tin_dang')
+      .select(
+        '*, categories (id, category_name, url), sub_categories (id, name, url)'
+      )
+      .eq('tin_id', id);
+
+    return data;
+  };
 
   const fetchCategories = async () => {
     try {
@@ -359,7 +376,7 @@ const FormCreate = ({}) => {
             />
           </Input>
           <p className='font-semibold mb-2'>
-            Hình ảnh (tối đa 5 ảnh){' '}
+            Hình ảnh (tối đa 5 ảnh)
             {isExceedFilesLimit && (
               <span className='text-red-500'>Chỉ được upload tối đa 5 ảnh</span>
             )}
@@ -407,7 +424,7 @@ const FormCreate = ({}) => {
               {formik.isSubmitting && (
                 <Oval width={20} strokeWidth={5} color='red' />
               )}
-              Create
+              Save
             </Button>
           </div>
         </div>
@@ -416,4 +433,4 @@ const FormCreate = ({}) => {
   );
 };
 
-export default FormCreate;
+export default FormEdit;

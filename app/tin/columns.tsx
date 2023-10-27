@@ -2,6 +2,8 @@
 
 import { ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal } from 'lucide-react';
+import Link from 'next/link';
+import supabase from '@/services/supabase';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -15,13 +17,21 @@ import {
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Payment = {
+export type Tin = {
   id: string;
-  amount: number;
   noi_dung: string;
+  tin_id: string;
 };
 
-export const columns: ColumnDef<Payment>[] = [
+const inactiveAd = async (id: string) => {
+  const { data, error } = await supabase
+    .from('tin_dang')
+    .update({ active: 'false' })
+    .eq('tin_id', id)
+    .select();
+};
+
+export const columns: ColumnDef<Tin>[] = [
   {
     accessorKey: 'id',
     header: 'Id',
@@ -49,7 +59,9 @@ export const columns: ColumnDef<Payment>[] = [
   {
     id: 'actions',
     cell: ({ row }) => {
-      const payment = row.original;
+      const tinId = row.original.tin_id;
+
+      console.log(tinId);
 
       return (
         <DropdownMenu>
@@ -59,16 +71,19 @@ export const columns: ColumnDef<Payment>[] = [
               <MoreHorizontal className='h-4 w-4' />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align='end'>
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
-              Copy payment ID
+          <DropdownMenuContent align='end' className='bg-white'>
+            <DropdownMenuItem className='cursor-pointer'>
+              <Link href={`/edit?id=${tinId}`}>Sửa tin đăng</Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                inactiveAd(tinId);
+              }}
+              className='cursor-pointer'
+            >
+              Ẩn tin đăng
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

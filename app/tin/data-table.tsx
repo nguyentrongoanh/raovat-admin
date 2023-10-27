@@ -15,6 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { Blocks } from 'react-loader-spinner';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -52,6 +53,7 @@ export function DataTable<TData, TValue>({
             </TableRow>
           ))}
         </TableHeader>
+
         <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map(row => (
@@ -67,9 +69,15 @@ export function DataTable<TData, TValue>({
               </TableRow>
             ))
           ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className='h-24 text-center'>
-                No results.
+            <TableRow className='w-[100%]'>
+              <TableCell colSpan={columns.length} className='h-24 '>
+                <Blocks
+                  visible={true}
+                  height='60'
+                  width='60'
+                  ariaLabel='blocks-loading'
+                  wrapperClass='blocks-wrapper m-auto'
+                />
               </TableCell>
             </TableRow>
           )}
