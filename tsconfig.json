@@ -29,7 +29,9 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "components/form.jsx",
-    "components/form.jsx"
+    "components/form.jsx",
+    "app/banner/components/UploadBanner.js",
+    "app/banner/components/UploadBanner.js"
   ],
   "exclude": ["node_modules"]
 }

@@ -27,7 +27,9 @@ export default function DemoPage() {
     const fetchData = async () => {
       const { count, error } = await supabase
         .from('tin_dang')
-        .select('*', { count: 'exact', head: true });
+        .select('*', { count: 'exact', head: true })
+        .eq('active', true)
+        .eq('is_vip', true);
 
       if (error) {
         console.error(error);
@@ -44,6 +46,8 @@ export default function DemoPage() {
       const { data, count, error } = await supabase
         .from('tin_dang')
         .select('*', { count: 'exact' })
+        .eq('active', true)
+        .eq('is_vip', true)
         .limit(1000)
         .range(currentPage * 10, currentPage * 10 + 9)
         .order('id', { ascending: true });
