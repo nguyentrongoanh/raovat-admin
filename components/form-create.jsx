@@ -10,11 +10,13 @@ import SelectInput from './ui/SelectInput';
 import TextInput from './ui/TextInput';
 import TextAreaInput from './ui/TextAreaInput';
 import ImagePicker from './ui/ImagePicker';
+import Checkbox from './ui/checkbox';
+import removeVietnameseTones from '@/lib/transform';
 
 const validationSchema = Yup.object({
   category: Yup.string().required('Vui lòng chọn danh mục'),
   state: Yup.string().required('Vui lòng chọn tiểu bang'),
-  city: Yup.string().required('Vui lòng chọn thành phố'),
+  city: Yup.array().required('Vui lòng chọn thành phố'),
   title: Yup.string()
     .max(200, 'Tiêu đề không dài hơn 200 kí')
     .required('Tiêu đề không được để trống'),
@@ -24,24 +26,42 @@ const validationSchema = Yup.object({
     .required('Thông tin liên hệ không được để trống'),
 });
 
-const FormDangTin = () => {
-  const [isSuccess, setIsSuccess] = useState(false);
+const defaultFormData = {
+  category: '',
+  subcategory: [],
+  state: '',
+  city: [],
+  title: '',
+  content: '',
+  vip: false,
+  active: true,
+  photo: null,
+};
 
-  const formData = {
-    category: '',
-    state: '',
-    city: '',
-    title: '',
-    content: '',
-    vip: false,
-    photo: null,
-  };
+const FormDangTin = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState(defaultFormData);
+
+  // const formData = {
+  //   category: '',
+  //   subcategory: [],
+  //   state: '',
+  //   city: [],
+  //   title: '',
+  //   content: '',
+  //   vip: false,
+  //   active: true,
+  //   photo: null,
+  // };
 
   const handleSubmit = async values => {
+    setIsSubmitting(true);
     const data = {
-      category_id: +values.category,
-      tieu_bang: values.state,
-      thanh_pho: values.city,
+      danh_muc: removeVietnameseTones(values.category).toLowerCase(),
+      danh_muc_phu: values.subcategory.toString(),
+      tieu_bang: values.state.toLowerCase(),
+      dia_chi: values.state,
+      thanh_pho: values.city.toString().toLowerCase(),
       tieu_de: values.title,
       noi_dung: values.content,
       lien_he: values.contact,
@@ -56,6 +76,7 @@ const FormDangTin = () => {
         ' ' +
         values.city,
       is_vip: values.vip,
+      active: values.active,
     };
 
     // Update or insert tin_dang
@@ -74,24 +95,36 @@ const FormDangTin = () => {
         cacheControl: '3600',
         upsert: true,
       });
-    // wait 3 seconds before closing modal
+    // // wait 3 seconds before closing modal
+    setTimeout(() => {
+      setIsSubmitting(false), 5000;
+    });
   };
 
   return (
     <>
       <div className='pb-10 mt-10 rounded-sm bg-white mb-3'>
         <div className='space-y-8'>
-          {/* <p>{JSON.stringify(pricings)}</p> */}
           <Formik
             initialValues={formData}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
+            key={Math.random()}
           >
             <Form className='px-10 text-black' encType='multipart/form-data'>
-              <div className='mb-4'>
+              <div className='flex space-x-10 mb-4'>
+                <Checkbox label='Active' name='active' />
+                <Checkbox label='VIP' name='vip' />
+              </div>
+              <div className='flex justify-between space-x-4 mb-4'>
                 <SelectInput
                   label='Danh mục'
                   name='category'
+                  placeholder='Chọn danh mục'
+                />
+                <SelectInput
+                  label='Danh mục phụ'
+                  name='subcategory'
                   placeholder='Chọn danh mục'
                 />
               </div>
@@ -136,6 +169,11 @@ const FormDangTin = () => {
             </Form>
           </Formik>
         </div>
+        {isSubmitting && (
+          <div className=' flex items-center justify-center w-full h-full bg-gray-400 m-auto absolute inset-0 text-2xl opacity-75 uppercase text-red-800'>
+            <span>Thí chủ vui lòng đợi trong giây lát ...</span>
+          </div>
+        )}
       </div>
     </>
   );

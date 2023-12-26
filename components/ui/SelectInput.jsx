@@ -2,12 +2,23 @@ import { useFormikContext, useField } from 'formik';
 import Select from 'react-select';
 import { useId } from 'react';
 import { stateCityMap } from '@/data/cities';
-import categories from '@/data/categories.json';
-import pricing from '@/data/pricing.json';
+import { CategorySubcategoryMap } from '@/data/categories';
+import removeVietnameseTones from '@/lib/transform';
 
 const SelectInput = ({ label, ...props }) => {
   const [field, meta] = useField(props);
   const { setFieldValue, setFieldTouched, values } = useFormikContext();
+
+  const categories = Object.keys(CategorySubcategoryMap).map(category => ({
+    label: category,
+    value: category,
+  }));
+
+  const subCategories =
+    CategorySubcategoryMap[values.category]?.map(subCategory => ({
+      label: subCategory,
+      value: removeVietnameseTones(subCategory).toLowerCase(),
+    })) || [];
 
   const states = Object.keys(stateCityMap).map(state => ({
     label: state,
@@ -18,6 +29,18 @@ const SelectInput = ({ label, ...props }) => {
     stateCityMap[values.state]?.map(city => ({ label: city, value: city })) ||
     [];
 
+  const handleOnSelect = option => {
+    let value;
+
+    if (props.name === 'state' || props.name === 'category') {
+      value = option.value;
+    } else if (props.name === 'city' || props.name === 'subcategory') {
+      value = option.map(item => item.value);
+    }
+
+    setFieldValue(field.name, value);
+  };
+
   let options;
 
   // Condition to render options based on the name of the field
@@ -27,8 +50,8 @@ const SelectInput = ({ label, ...props }) => {
     options = cities;
   } else if (props.name === 'category') {
     options = categories;
-  } else if (props.name === 'pricing') {
-    options = pricing;
+  } else if (props.name === 'subcategory') {
+    options = subCategories;
   }
 
   return (
@@ -40,17 +63,23 @@ const SelectInput = ({ label, ...props }) => {
         options={options}
         {...field}
         {...props}
-        onChange={option => {
-          setFieldValue(field.name, option.value);
-          {
-            props.name === 'pricing' && props.onSelect(option.value);
-          }
-        }}
+        // onChange={option => {
+        //   console.log(option);
+        //   setFieldValue(field.name, option.value);
+        // }}
+        onChange={handleOnSelect}
         value={options.find(option => option.value === field.value)}
-        noOptionsMessage={() => 'Vui lòng chọn tiểu bang trước'}
+        noOptionsMessage={() =>
+          props.name === 'city'
+            ? 'Vui lòng chọn tiểu bang trước'
+            : props.name === 'subcategory'
+            ? 'Vui lòng chọn danh mục trước'
+            : 'Không có lựa chọn'
+        }
         onBlur={() => {
           setFieldTouched(field.name, true);
         }}
+        isMulti={props.name === 'city' || props.name === 'subcategory'}
         instanceId={useId()}
       />
       {meta.touched && meta.error ? (

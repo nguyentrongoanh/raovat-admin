@@ -31,7 +31,8 @@
     "components/form.jsx",
     "components/form.jsx",
     "app/banner/components/UploadBanner.js",
-    "app/banner/components/UploadBanner.js"
+    "app/banner/components/UploadBanner.js",
+    "components/ui/checkbox-1tsx"
   ],
   "exclude": ["node_modules"]
 }
