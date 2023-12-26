@@ -1,18 +1,37 @@
 'use client';
 
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 
 import iconItems from '@/public/svg/items.svg';
-import FormEdit from '@/components/formEdit';
+import FormEdit from '@/components/form-edit';
+import supabase from '@/services/supabase';
 
 interface PageProps {}
 
 const Page: FC<PageProps> = ({}) => {
-  const searchParams = useSearchParams();
+  const [data, setData] = useState<any[] | null>([]); // [1
 
+  const searchParams = useSearchParams();
   const tinId = searchParams.get('id');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data, error } = await supabase
+        .from('tin_dang')
+        .select('*')
+        .eq('tin_id', tinId);
+
+      if (error) {
+        console.error(error);
+      }
+
+      setData(data);
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className='bg-[#F0F3F5] w-[100%] ml-[250px]'>
@@ -28,7 +47,7 @@ const Page: FC<PageProps> = ({}) => {
         </div>
       </div>
       <div className='bg-white m-12 p-8 rounded-[5px] shadow-lg'>
-        <FormEdit tinId={tinId} />
+        <FormEdit data={data} />
       </div>
     </div>
   );

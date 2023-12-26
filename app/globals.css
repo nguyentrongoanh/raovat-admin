@@ -9,3 +9,8 @@ body,
   color-scheme: light;
   color: #343a40;
 }
+
+.error {
+  margin-top: 4px;
+  color: red;
+}

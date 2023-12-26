@@ -1,0 +1,50 @@
+[
+  {
+    "label": "G1A - $20/1THÁNG - Trên 1 vùng, thành phố",
+    "value": "1"
+  },
+  {
+    "label": "G1B - $45/2THÁNG - Trên 1 vùng, thành phố",
+    "value": "2"
+  },
+  {
+    "label": "G1C - $60/3THÁNG - Trên 1 vùng, thành phố",
+    "value": "3"
+  },
+  {
+    "label": "G2A - $25/1THÁNG - Trên toàn nước Mỹ",
+    "value": "4"
+  },
+  {
+    "label": "G2B - $60/3THÁNG - Trên toàn nước Mỹ",
+    "value": "5"
+  },
+  {
+    "label": "G2C - $90/6THÁNG - Trên toàn nước Mỹ",
+    "value": "6"
+  },
+  {
+    "label": "G3A -$35/1THÁNG - Quảng cáo banner phụ",
+    "value": "7"
+  },
+  {
+    "label": "G3B - $90/3THÁNG - Quảng cáo banner phụ",
+    "value": "8"
+  },
+  {
+    "label": "G3C - $150/6THÁNG - Quảng cáo banner phụ",
+    "value": "9"
+  },
+  {
+    "label": "G4A - $45/1THÁNG - Quảng cáo banner chính",
+    "value": "10"
+  },
+  {
+    "label": "G4B -$120/3THÁNG - Quảng cáo banner chính",
+    "value": "11"
+  },
+  {
+    "label": "G4C - $210/6THÁNG - Quảng cáo banner chính",
+    "value": "12"
+  }
+]

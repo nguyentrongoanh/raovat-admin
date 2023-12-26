@@ -61,8 +61,6 @@ export const columns: ColumnDef<Tin>[] = [
     cell: ({ row }) => {
       const tinId = row.original.tin_id;
 
-      console.log(tinId);
-
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

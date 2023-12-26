@@ -33,7 +33,6 @@ export default function UploadBanner({ name }) {
 
   async function uploadImage(e) {
     const file = e.target.files[0];
-    console.log(file);
 
     const { data, error } = await supabase.storage
       .from('images')
