@@ -54,7 +54,7 @@ const FormCreate = ({}) => {
         .max(200, 'Tiêu đề không dài hơn 200 kí')
         .required('Tiêu đề không được để trống'),
       desc: Yup.string()
-        .max(300, 'Nội dung không được dài hơn 300 kí tự')
+        .max(1000, 'Nội dung không được dài hơn 1000 kí tự')
         .required('Nội dung không được để trống'),
       contact: Yup.string()
         .max(200, 'Thông tin liên hệ không được dài hơn 200 kí tự')
