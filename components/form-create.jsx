@@ -17,6 +17,7 @@ const validationSchema = Yup.object({
   category: Yup.string().required('Vui lòng chọn danh mục'),
   state: Yup.string().required('Vui lòng chọn tiểu bang'),
   city: Yup.array().required('Vui lòng chọn thành phố'),
+  subcategory: Yup.array().required('Vui lòng chọn danh mục phụ'),
   title: Yup.string()
     .max(200, 'Tiêu đề không dài hơn 200 kí')
     .required('Tiêu đề không được để trống'),
