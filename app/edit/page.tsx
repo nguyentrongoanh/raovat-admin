@@ -47,7 +47,7 @@ const Page: FC<PageProps> = ({}) => {
         </div>
       </div>
       <div className='bg-white m-12 p-8 rounded-[5px] shadow-lg'>
-        <FormEdit data={data} />
+        <FormEdit />
       </div>
     </div>
   );
