@@ -27,42 +27,30 @@ const validationSchema = Yup.object({
     .required('Thông tin liên hệ không được để trống'),
 });
 
-const defaultFormData = {
-  category: '',
-  subcategory: [],
-  state: '',
-  city: [],
-  title: '',
-  content: '',
-  vip: false,
-  active: true,
-  photo: null,
-};
-
 const FormDangTin = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formData, setFormData] = useState(defaultFormData);
 
-  // const formData = {
-  //   category: '',
-  //   subcategory: [],
-  //   state: '',
-  //   city: [],
-  //   title: '',
-  //   content: '',
-  //   vip: false,
-  //   active: true,
-  //   photo: null,
-  // };
+  const formData = {
+    category: '',
+    subcategory: [],
+    state: '',
+    city: [],
+    title: '',
+    content: '',
+    vip: false,
+    active: true,
+    photo: null,
+  };
 
   const handleSubmit = async values => {
     setIsSubmitting(true);
     const data = {
-      danh_muc: removeVietnameseTones(values.category).toLowerCase(),
+      // danh_muc: removeVietnameseTones(values.category).toLowerCase(),
+      danh_muc: values.category,
       danh_muc_phu: values.subcategory.toString(),
-      tieu_bang: values.state.toLowerCase(),
+      tieu_bang: values.state,
       dia_chi: values.state,
-      thanh_pho: values.city.toString().toLowerCase(),
+      thanh_pho: values.city.toString(),
       tieu_de: values.title,
       noi_dung: values.content,
       lien_he: values.contact,

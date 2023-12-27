@@ -14,10 +14,16 @@ const SelectInput = ({ label, ...props }) => {
     value: category,
   }));
 
+  // const subCategories =
+  //   CategorySubcategoryMap[values.category]?.map(subCategory => ({
+  //     label: subCategory,
+  //     value: removeVietnameseTones(subCategory).toLowerCase(),
+  //   })) || [];
+
   const subCategories =
     CategorySubcategoryMap[values.category]?.map(subCategory => ({
       label: subCategory,
-      value: removeVietnameseTones(subCategory).toLowerCase(),
+      value: subCategory,
     })) || [];
 
   const states = Object.keys(stateCityMap).map(state => ({
@@ -53,6 +59,9 @@ const SelectInput = ({ label, ...props }) => {
   } else if (props.name === 'subcategory') {
     options = subCategories;
   }
+
+  console.log(options);
+  console.log(field.value);
 
   return (
     <div className='flex-1'>
