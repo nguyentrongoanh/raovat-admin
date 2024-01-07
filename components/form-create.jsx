@@ -54,16 +54,17 @@ const FormDangTin = () => {
       tieu_de: values.title,
       noi_dung: values.content,
       lien_he: values.contact,
-      search_text:
+      search_text: removeVietnameseTones(
         values.title +
-        ' ' +
-        values.content +
-        ' ' +
-        values.contact +
-        ' ' +
-        values.state +
-        ' ' +
-        values.city,
+          ' ' +
+          values.content +
+          ' ' +
+          values.contact +
+          ' ' +
+          values.state +
+          ' ' +
+          values.city
+      ).toLowerCase(),
       is_vip: values.vip,
       active: values.active,
     };
