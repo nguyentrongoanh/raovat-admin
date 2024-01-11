@@ -1,6 +1,3 @@
-'use client';
-import { useEffect, useState } from 'react';
-
 import Image from 'next/image';
 import supabase from '@/services/supabase.js';
 
