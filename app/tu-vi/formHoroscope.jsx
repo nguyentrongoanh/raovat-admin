@@ -1,10 +1,16 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import ReactQuill from 'react-quill';
+import dynamic from 'next/dynamic';
+// import ReactQuill from 'react-quill';
 import supabase from '@/services/supabase.js';
 import 'react-quill/dist/quill.snow.css';
 import Select from 'react-select';
+
+const ReactQuill = dynamic(() => import('react-quill'), {
+  ssr: false,
+  loading: () => <p>Loading...</p>,
+});
 
 const options = [
   { value: 'ti nam', label: 'Nam Tí' },
@@ -35,7 +41,7 @@ const options = [
 
 export default function FormHoroscope() {
   const [value, setValue] = useState('');
-  const [selection, setSelection] = useState(options[0].value);
+  const [selection, setSelection] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,8 +49,10 @@ export default function FormHoroscope() {
         .from('tu_vi')
         .select('*')
         .eq('name', selection);
-      console.log(tu_vi[0].noi_dung);
-      setValue(tu_vi[0].noi_dung);
+
+      if (tu_vi.length > 0) {
+        setValue(tu_vi[0].noi_dung);
+      }
     };
 
     fetchData();
