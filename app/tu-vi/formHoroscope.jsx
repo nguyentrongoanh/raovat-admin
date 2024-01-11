@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
 import supabase from '@/services/supabase.js';
