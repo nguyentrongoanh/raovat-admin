@@ -5,6 +5,7 @@ import iconItems from '@/public/svg/items.svg';
 import { Button } from '@/components/ui/button';
 
 import FormHoroscope from './formHoroscope';
+import FormWeek from './formTuan';
 
 export default function Page() {
   return (
@@ -28,6 +29,8 @@ export default function Page() {
       </div>
       {/* Table */}
       <div className='bg-white m-12 rounded-[5px] shadow-lg'>
+        <FormWeek />
+        <hr />
         <FormHoroscope />
       </div>
     </div>

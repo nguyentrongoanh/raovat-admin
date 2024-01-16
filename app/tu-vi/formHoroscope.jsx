@@ -14,29 +14,17 @@ const ReactQuill = dynamic(() => import('react-quill'), {
 
 const options = [
   { value: 'ti nam', label: 'Nam Tí' },
-  { value: 'ti nu', label: 'Nữ Tí' },
   { value: 'suu nam', label: 'Nam Sửu' },
-  { value: 'suu nu', label: 'Nữ  Sửu' },
   { value: 'dan nam', label: 'Nam Dần' },
-  { value: 'dan nu', label: 'Nữ Dần' },
   { value: 'meo nam', label: 'Nam Mẹo' },
-  { value: 'meo nu', label: 'Nữ Mẹo' },
   { value: 'thin nam', label: 'Nam Thìn' },
-  { value: 'thin nu', label: 'Nữ Thìn' },
   { value: 'ty nam', label: 'Nam Tỵ' },
-  { value: 'ty nu', label: 'Nữ Tỵ' },
   { value: 'ngo nam', label: 'Nam Ngọ' },
-  { value: 'ngo nam', label: 'Nữ Ngọ' },
   { value: 'mui nam', label: 'Nam Mùi' },
-  { value: 'mui nu', label: 'Nữ Mùi' },
   { value: 'than nam', label: 'Nam Thân' },
-  { value: 'than nu', label: 'Nữ Thân' },
   { value: 'dau nam', label: 'Nam Dậu' },
-  { value: 'dau nu', label: 'Nữ Dậu' },
   { value: 'tuat nam', label: 'Nam Tuất' },
-  { value: 'tuat nu', label: 'Nữ Tuất' },
   { value: 'hoi nam', label: 'Nam Hợi' },
-  { value: 'hoi nu', label: 'Nữ Hợi' },
 ];
 
 export default function FormHoroscope() {
@@ -64,7 +52,7 @@ export default function FormHoroscope() {
     const { data, error } = await supabase
       .from('tu_vi')
       .update({ noi_dung: value })
-      .eq('id', 1)
+      .eq('name', selection)
       .select();
   };
 
