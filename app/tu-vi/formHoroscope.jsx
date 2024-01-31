@@ -13,18 +13,18 @@ const ReactQuill = dynamic(() => import('react-quill'), {
 });
 
 const options = [
-  { value: 'ti nam', label: 'Nam Tí' },
-  { value: 'suu nam', label: 'Nam Sửu' },
-  { value: 'dan nam', label: 'Nam Dần' },
-  { value: 'meo nam', label: 'Nam Mẹo' },
-  { value: 'thin nam', label: 'Nam Thìn' },
-  { value: 'ty nam', label: 'Nam Tỵ' },
-  { value: 'ngo nam', label: 'Nam Ngọ' },
-  { value: 'mui nam', label: 'Nam Mùi' },
-  { value: 'than nam', label: 'Nam Thân' },
-  { value: 'dau nam', label: 'Nam Dậu' },
-  { value: 'tuat nam', label: 'Nam Tuất' },
-  { value: 'hoi nam', label: 'Nam Hợi' },
+  { value: 'ti nam', label: 'Tí' },
+  { value: 'suu nam', label: 'Sửu' },
+  { value: 'dan nam', label: 'Dần' },
+  { value: 'meo nam', label: 'Mẹo' },
+  { value: 'thin nam', label: 'Thìn' },
+  { value: 'ty nam', label: 'Tỵ' },
+  { value: 'ngo nam', label: 'Ngọ' },
+  { value: 'mui nam', label: 'Mùi' },
+  { value: 'than nam', label: 'Thân' },
+  { value: 'dau nam', label: 'Dậu' },
+  { value: 'tuat nam', label: 'Tuất' },
+  { value: 'hoi nam', label: 'Hợi' },
 ];
 
 export default function FormHoroscope() {
@@ -38,13 +38,19 @@ export default function FormHoroscope() {
         .select('*')
         .eq('name', selection);
 
+      console.log(tu_vi);
+
       if (tu_vi.length > 0) {
         setValue(tu_vi[0].noi_dung);
+      } else {
+        setValue('');
       }
     };
 
     fetchData();
   }, [selection]);
+
+  console.log(selection);
 
   const handleSubmit = async event => {
     event.preventDefault();
