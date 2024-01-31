@@ -45,8 +45,8 @@ const FormDangTin = () => {
   const handleSubmit = async values => {
     setIsSubmitting(true);
     const data = {
-      // danh_muc: removeVietnameseTones(values.category).toLowerCase(),
-      danh_muc: values.category,
+      danh_muc: removeVietnameseTones(values.category).toLowerCase(),
+      // danh_muc: values.category,
       danh_muc_phu: values.subcategory.toString(),
       tieu_bang: values.state,
       dia_chi: values.state,
