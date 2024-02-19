@@ -20,6 +20,19 @@ const Sidebar: FC<SidebarProps> = ({}) => {
 
   return (
     <div className='w-[250px] h-[100vh] p-8 font-semibold bg-white fixed shadow-md'>
+      {' '}
+      <Link
+        href={'/tu-vi-nam'}
+        className={currentRoute === '/tu-vi-nam' ? activeStyle : nonActiveStyle}
+      >
+        <Image
+          src={'/images/horoscope.png'}
+          width={24}
+          height={24}
+          alt='icon'
+        />
+        <span>Tử Vi Năm</span>
+      </Link>
       <Link
         href={'/tu-vi'}
         className={currentRoute === '/tu-vi' ? activeStyle : nonActiveStyle}
