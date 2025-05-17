@@ -31,9 +31,7 @@ const SelectInput = ({ label, ...props }) => {
     value: state,
   }));
 
-  const cities =
-    stateCityMap[values.state]?.map(city => ({ label: city, value: city })) ||
-    [];
+  const cities = stateCityMap[values.state]?.map(city => ({ label: city, value: city })) || [];
 
   const handleOnSelect = option => {
     let value;
@@ -60,8 +58,21 @@ const SelectInput = ({ label, ...props }) => {
     options = subCategories;
   }
 
-  console.log(options);
-  console.log(field.value);
+  // Function to determine the correct value for the Select component
+  const getSelectValue = () => {
+    const isMulti = props.name === 'city' || props.name === 'subcategory';
+
+    if (isMulti) {
+      // For multi-select fields, we need to find all matching options
+      if (Array.isArray(field.value)) {
+        return field.value.map(val => options.find(option => option.value === val) || { label: val, value: val });
+      }
+      return [];
+    } else {
+      // For single-select fields
+      return options.find(option => option.value === field.value) || null;
+    }
+  };
 
   return (
     <div className='flex-1'>
@@ -72,28 +83,16 @@ const SelectInput = ({ label, ...props }) => {
         options={options}
         {...field}
         {...props}
-        // onChange={option => {
-        //   console.log(option);
-        //   setFieldValue(field.name, option.value);
-        // }}
         onChange={handleOnSelect}
-        value={options.find(option => option.value === field.value)}
-        noOptionsMessage={() =>
-          props.name === 'city'
-            ? 'Vui lòng chọn tiểu bang trước'
-            : props.name === 'subcategory'
-            ? 'Vui lòng chọn danh mục trước'
-            : 'Không có lựa chọn'
-        }
+        value={getSelectValue()}
+        noOptionsMessage={() => (props.name === 'city' ? 'Vui lòng chọn tiểu bang trước' : props.name === 'subcategory' ? 'Vui lòng chọn danh mục trước' : 'Không có lựa chọn')}
         onBlur={() => {
           setFieldTouched(field.name, true);
         }}
         isMulti={props.name === 'city' || props.name === 'subcategory'}
         instanceId={useId()}
       />
-      {meta.touched && meta.error ? (
-        <div className='error'>{meta.error}</div>
-      ) : null}
+      {meta.touched && meta.error ? <div className='error'>{meta.error}</div> : null}
     </div>
   );
 };
